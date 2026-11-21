@@ -1,6 +1,6 @@
 """Is a newer version on GitHub? Read-only check of one small text file, at most every 6 hours, in the background.
 
-Nothing is downloaded or changed here: updating is always the owner's choice (double-click «تحديث.command»).
+Nothing is downloaded or changed here: updating is always the owner's choice (double-click «Update.command»).
 """
 from __future__ import annotations
 

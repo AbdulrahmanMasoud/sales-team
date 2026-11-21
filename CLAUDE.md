@@ -1,70 +1,70 @@
-# تعليمات لـ Claude: مشروع «فريق المبيعات»
+# Instructions for Claude: the "Sales Team" project
 
-صاحب المشروع غالباً **مش تقني** وبيستخدم **Mac**. كلّمه بالعامية المصرية وبجمل قصيرة، ومن غير مصطلحات. لو لازم تقول مصطلح، اشرحه في نص سطر.
+The person you're helping is usually the **business owner, not technical**, on a **Mac**. Talk to them in **simple Egyptian Arabic**, in short sentences, without jargon. If you must use a technical term, explain it in half a line. Keep code, comments and commit messages in English.
 
-## لما يقولك «شغّل المشروع» أو «ظبّطه»
+## When they say "run the project" or "set it up"
 
-1. شيل حظر الماك عن الملفات اللي اتنزلت من النت، وخلّي ملفات التشغيل قابلة للتشغيل:
+1. Remove the Mac download quarantine and make the launchers executable:
    ```bash
    xattr -dr com.apple.quarantine . 2>/dev/null; chmod +x *.command
    ```
-2. اتأكد إن فيه Python 3.10 أو أحدث: `python3 --version`.
-   لو مش موجود أو أقدم، قوله ينزّله من https://www.python.org/downloads/macos/ (الـinstaller العادي، Next لحد الآخر)، وبعدين كمّل. متستخدمش Homebrew إلا لو هو طلب.
-3. جهّز البيئة (أول مرة بس):
+2. Check Python 3.10 or newer: `python3 --version`.
+   If missing or older, tell them to install it from https://www.python.org/downloads/macos/ (the normal installer, Continue until the end), then continue. Don't use Homebrew unless they ask.
+3. Create the environment (first time only):
    ```bash
    python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
    ```
-4. شغّل في الخلفية وافتح صفحة الإعداد:
+4. Start it in the background and open the setup page:
    ```bash
    .venv/bin/python run.py
    ```
-   افتح له http://127.0.0.1:8765/#setup (`open http://127.0.0.1:8765/#setup`).
-   قوله إن الأسهل بعد كده إنه يدوس دبل كليك على «تشغيل.command».
-5. وجّهه لصفحة «الإعداد أول مرة» في الداشبورد: فيها الخطوات بالصور الكلامية لكل حاجة (Claude، أساسيات البيزنس، Meta، Telegram).
+   Then `open http://127.0.0.1:8765/#setup`.
+   Tell them that from now on they can just double-click **Start.command**.
+5. Point them to the setup page in the dashboard («الإعداد أول مرة»). It has step-by-step guides for everything (Claude, business basics, Meta, Telegram).
 
-## التحديث
+## Updates
 
-- العادي: «تحديث.command» (أو `bash تحديث.command`). بينزّل آخر نسخة من GitHub ويحطها فوق الكود، وبيسيب `data/` و`.env` و`.venv/` زي ما هم، وبيعمل نسخة احتياطية من `data/` في `backups/`.
-- **للمطوّر:** أي تعديل يتعمله push لازم يزوّد رقم ملف `VERSION` (مثلاً 2026.11.21.1 ← 2026.11.21.2)، وإلا الداشبورد و«تحديث.command» مش هيشوفوه. والتعديلات على الداتابيز تبقى إضافة بس (جداول أو أعمدة جديدة)، عشان `db._add_missing_columns` يحدّث داتابيز المستخدمين القديمة لوحده.
+- Normal path: **Update.command** (or `bash Update.command`). It downloads the latest version from GitHub over the code, leaves `data/`, `.env` and `.venv/` untouched, and backs up `data/` to `backups/`.
+- **For the developer:** every change that gets pushed must bump the number in `VERSION` (e.g. 2026.11.21.2 → 2026.11.21.3), otherwise the dashboard and Update.command won't see it. Database changes must be additive only (new tables or columns), so `db._add_missing_columns` upgrades users' existing databases by itself.
 
-## لو عنده نسخة قديمة من غير «تحديث.command»
+## If they have an old copy without Update.command
 
-بيانات المستخدم كلها في حاجتين جوه فولدر النسخة القديمة: فولدر `data/` (الطلبات، والعملا، والقرارات، وذاكرة الـagents، والإعدادات) وملف `.env` (الـtokens). النسخة الجديدة مفيهاش الاتنين عن قصد.
-1. اطلب منه يقفل الشباك الأسود بتاع النسخة القديمة (أو `lsof -ti :8765 | xargs kill`).
-2. انسخ (متنقلش) `data/` و`.env` من الفولدر القديم للجديد: `cp -R "OLD/data" "NEW/" && cp "OLD/.env" "NEW/.env" && chmod 600 "NEW/.env"`. متقراش `.env` ومتعرضش محتواه.
-3. شغّل النسخة الجديدة. هي بتحدّث الداتابيز والإعدادات لوحدها، ومبتمسحش حاجة.
-4. اتأكد إن الصفحة فتحت وإن Meta لسه متوصّل، وبعدها قوله يقدر يمسح الفولدر القديم. متمسحهوش انت.
+All their data is in two places inside the old folder: `data/` (orders, customers, decisions, agent memory, settings) and `.env` (tokens). New downloads deliberately don't include either.
+1. Ask them to close the old black window (or `lsof -ti :8765 | xargs kill`).
+2. Copy (don't move) `data/` and `.env` from the old folder to the new one: `cp -R "OLD/data" "NEW/" && cp "OLD/.env" "NEW/.env" && chmod 600 "NEW/.env"`. Never read `.env` or show its contents.
+3. Start the new version. It upgrades the database and settings by itself and deletes nothing.
+4. Check the page opens and Meta is still connected, then tell them they can delete the old folder. Don't delete it yourself.
 
-## أمان: ممنوع تطلب أي token في الشات
+## Security: never ask for a token in chat
 
-- **متطلبش منه أبداً** إنه يلزق token أو كلمة سر أو App Secret في المحادثة. الـtokens بتتحط في صفحة الإعداد في الداشبورد بس، وهي اللي بتختبرها وتحفظها في `.env` بصلاحيات 600.
-- لو لزق token في الشات بالغلط: متكررهوش ولا تكتبه في أي ملف أو أمر. قوله إنه يعمل token جديد (Generate new token) ويحطه من صفحة الإعداد، لأن اللي اتكتب في الشات بيفضل في المحادثة.
-- متقراش `.env` وتعرض محتواه.
+- **Never ask** them to paste a token, password or app secret into the conversation. Tokens go into the setup page in the dashboard only; it tests them and saves them to `.env` with mode 600.
+- If they paste a token into the chat by mistake: don't repeat it or write it into any file or command. Tell them to generate a new one and enter it in the setup page, because whatever is typed in the chat stays in the conversation.
+- Never read `.env` and show its contents.
 
-## متغيرش الحاجات دي إلا لو صاحب المشروع طلب صراحةً
+## Don't change these unless the owner explicitly asks
 
-- كود الحماية: `app/guards.py`، `app/executor.py`، `app/tools.py`، وإعدادات الـagents في `app/agents.py` (`build_options`, `SECURITY_RULES`).
-- متقفلش «التجربة من غير تنفيذ» (dry run) ومتغيرش الصلاحيات من «اسألني» لـ«تلقائي» من نفسك. ده قراره هو من صفحة الإعدادات.
-- السيرفر لازم يفضل على `127.0.0.1` بس.
+- Safety code: `app/guards.py`, `app/executor.py`, `app/tools.py`, and the agent options in `app/agents.py` (`build_options`, `SECURITY_RULES`).
+- Don't turn off dry run and don't change permissions from "ask" to "auto" on your own. That's the owner's decision, from the settings page.
+- The server must stay on `127.0.0.1` only.
 
-لو طلب تعديل في الحاجات دي، اشرحله في سطرين إيه الخطر، ونفّذ لو أكّد. وبعد أي تعديل شغّل الاختبارات:
+If they ask to change any of these, explain the risk in two lines and do it once they confirm. After any change run the tests:
 ```bash
 .venv/bin/pip install pytest && .venv/bin/python -m pytest -q
 ```
 
-## مشاكل شائعة
+## Common problems
 
-| المشكلة | الحل |
+| Problem | Fix |
 |---|---|
-| الماك بيقول «can't be opened» على ملف .command | كليك يمين على الملف ← Open ← Open. أو System Settings ← Privacy & Security ← Open Anyway. أو خطوة 1 فوق. |
-| «جرّب Claude» بيقول مش مسجّل دخول | يدوس دبل كليك على «تسجيل دخول Claude.command» ويكمّل تسجيل الدخول في المتصفح، وبعدين `/exit`. |
-| البورت 8765 مستخدم | غالباً البرنامج شغال أصلاً. افتح http://127.0.0.1:8765/ . لو لأ: `lsof -i :8765`. |
-| Meta بيرفض الـtoken | صفحة الإعداد بتقول السبب بالعربي. أغلب الحالات: الـsystem user مش متضاف له الحساب الإعلاني، أو ناقص صلاحية ads_management. |
-| الـagents مش بتشتغل في معادها | اللابتوب لازم يكون صاحي والبرنامج مفتوح. «تشغيل.command» بيمنع الماك ينام طول ما الشباك مفتوح. |
-| عايز يجرّب من غير حسابه | `.venv/bin/python run.py --demo` (بيانات وهمية في فولدر data-demo). |
+| Mac says a .command file "can't be opened" | Right-click the file → Open → Open. Or System Settings → Privacy & Security → Open Anyway. Or step 1 above. |
+| "Test Claude" says not signed in | Double-click **Claude Login.command**, finish signing in in the browser, then `/exit`. |
+| Port 8765 is in use | The app is probably already running: open http://127.0.0.1:8765/ . Otherwise: `lsof -i :8765`. |
+| Meta refuses the token | The setup page explains why in Arabic. Usually the system user wasn't given the ad account, or `ads_management` is missing. |
+| Agents don't run on schedule | The laptop must be awake with the app open. Start.command keeps the Mac awake while its window is open. |
+| They want to try without their account | `.venv/bin/python run.py --demo` (fake data in `data-demo/`). |
 
-## معلومات عن المشروع
+## About the project
 
-- Python + FastAPI، الداشبورد في `static/`، البيانات في `data/sales.db` (SQLite).
-- 3 agents: الميديا باير، متابعة العملا، المراجعة الأسبوعية. بيشتغلوا باشتراك Claude بتاع صاحب المشروع عن طريق Claude Agent SDK.
-- التفاصيل الكاملة في `README.md`.
+- Python + FastAPI; dashboard in `static/` (UI text is Egyptian Arabic on purpose); data in `data/sales.db` (SQLite).
+- 3 agents: media buyer, customer follow-up, weekly review. They run on the owner's Claude subscription through the Claude Agent SDK.
+- Full details in `README.md`. End-user guide (Arabic): `START-HERE.md`.

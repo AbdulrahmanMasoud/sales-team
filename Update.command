@@ -1,5 +1,5 @@
 #!/bin/bash
-# تحديث البرنامج لآخر نسخة على GitHub، من غير ما يلمس بياناتك (data) ولا الـtokens (.env).
+# Update to the latest version on GitHub without touching your data (data/) or tokens (.env).
 # Everything is inside { }: bash reads the whole block before running it, so this file can safely
 # replace itself during the update.
 {
@@ -54,11 +54,13 @@ fi
 # 4) copy the new code over the old one. Your data, tokens and installed packages are never touched.
 rm -rf "$TMP/new/data" "$TMP/new/data-demo" "$TMP/new/backups" "$TMP/new/.env" "$TMP/new/.venv"
 cp -R "$TMP/new/." ./ || finish "حصلت مشكلة وأنا بنسخ الملفات. بياناتك في backups. ابعت سكرين شوت للي بيساعدك." 1
+# files renamed in 2026.11.21.2 (Arabic names -> English): remove the old copies
+rm -f "./تشغيل.command" "./تحديث.command" "./تسجيل دخول Claude.command" "./ابدأ هنا.md"
 chmod +x ./*.command 2>/dev/null
 xattr -dr com.apple.quarantine . 2>/dev/null
 
 say "اتحدّث لنسخة $REMOTE_VERSION. هشغّل البرنامج دلوقتي..."
 sleep 1
-exec "./تشغيل.command"
+exec "./Start.command"
 }
 exit

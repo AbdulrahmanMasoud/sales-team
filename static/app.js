@@ -103,7 +103,7 @@
     if (!STATUS) return null;
     const out = [];
     if (STATUS.update && STATUS.update.update_available) out.push(h('div', { class: 'banner info' },
-      'فيه نسخة جديدة من البرنامج (' + STATUS.update.latest + '). اقفل الشباك الأسود، وروح لفولدر البرنامج ودوس دبل كليك على «تحديث.command». بياناتك والـtokens مش هتتلمس.'));
+      'فيه نسخة جديدة من البرنامج (' + STATUS.update.latest + '). اقفل الشباك الأسود، وروح لفولدر البرنامج ودوس دبل كليك على «Update.command». بياناتك والـtokens مش هتتلمس.'));
     if (STATUS.demo_flag) out.push(h('div', { class: 'banner info' }, 'ده وضع البيانات التجريبية: الإعلانات والعملا وهميين عشان تجرّب براحتك.'));
     else if (STATUS.demo) out.push(h('div', { class: 'banner warn' }, 'Meta لسه مش متوصّل، فأرقام الإعلانات اللي ظاهرة دي تجريبية. ', h('a', { href: '#setup' }, 'كمّل الإعداد')));
     if (!STATUS.agents_enabled) out.push(h('div', { class: 'banner bad' }, 'الفريق متوقف بالكامل من الإعدادات، ومفيش agent هيشتغل.'));
@@ -728,7 +728,7 @@
       h('div', null, 'الفريق بيشتغل باشتراكك في Claude. دوس الزرار نتأكد إن Claude شغال على الجهاز ده.'),
       guide('لو قالك «مش متسجّل دخول»', [
         'اقفل الصفحة دي وارجع لفولدر المشروع.',
-        'دوس دبل كليك على **تسجيل دخول Claude.command**. (أول مرة بس: كليك يمين ← **Open** ← **Open**، عشان الماك يسمح بيه)',
+        'دوس دبل كليك على **Claude Login.command**. (أول مرة بس: كليك يمين ← **Open** ← **Open**، عشان الماك يسمح بيه)',
         'هتفتح نافذة سودا وهتطلب منك تسجّل دخول. اختار حساب **Claude** (اشتراك Pro أو Max) وكمّل في المتصفح.',
         'لما يقولك تمام، اقفل النافذة السودا وارجع هنا ودوس **جرّب Claude** تاني.',
       ], false), h('div', { class: 'btns' }, cBtn), cOut);
@@ -886,7 +886,7 @@
       h('div', null, 'الفريق هيشتغل لوحده كل يوم في مواعيده طول ما البرنامج مفتوح. ووضع التجربة شغال: أي قرار بيتسجل بس من غير ما يغيّر حاجة في Meta، لحد ما تقفله بنفسك من «الإعدادات».'),
       h('div', { class: 'btns' }, h('a', { class: 'btn pri', href: '#overview' }, 'روح للصفحة الرئيسية'), h('a', { class: 'btn', href: '#customers' }, 'سجّل أول طلبات')));
     page('الإعداد أول مرة', 'خطوة خطوة. مش محتاج تفتح أي ملف.', null,
-      st.demo_flag ? h('div', { class: 'banner warn' }, 'البرنامج شغال دلوقتي في وضع البيانات التجريبية. بعد ما توصّل Meta، اقفله وافتحه تاني من «تشغيل.command».') : null,
+      st.demo_flag ? h('div', { class: 'banner warn' }, 'البرنامج شغال دلوقتي في وضع البيانات التجريبية. بعد ما توصّل Meta، اقفله وافتحه تاني من «Start.command».') : null,
       s1, s2, s3, s4, s5, finish);
   }
 

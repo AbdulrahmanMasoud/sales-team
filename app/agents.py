@@ -251,9 +251,9 @@ def _friendly_error(e: Exception) -> str:
     name = type(e).__name__
     text = str(e)[:300]
     if name in ("CLINotFoundError",):
-        return "مكونات Claude ناقصة: اقفل البرنامج وافتحه تاني من «تشغيل.command» وهو هينزّلها."
+        return "مكونات Claude ناقصة: اقفل البرنامج وافتحه تاني من «Start.command» وهو هينزّلها."
     if "login" in text.lower() or "auth" in text.lower():
-        return "Claude مش متسجّل دخول على الجهاز ده: دوس دبل كليك على «تسجيل دخول Claude.command» وسجّل بحساب اشتراكك."
+        return "Claude مش متسجّل دخول على الجهاز ده: دوس دبل كليك على «Claude Login.command» وسجّل بحساب اشتراكك."
     return f"{name}: {text}"
 
 
